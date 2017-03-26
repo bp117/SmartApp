@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Series 3:  Tutorials on building an Angular 2 Multi-Step Wizard using UI-Router 1.0 and TypeScript 2.0.10
 
 #### [Demo site](http://multi-step-wizard.azurewebsites.net/series-3/#/personal)
