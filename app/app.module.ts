@@ -19,6 +19,7 @@ import { appStates }          from "./app.states";
 
 /* Shared Service */
 import { FormDataService }    from './data/formData.service'
+import { AgmCoreModule, MapsAPILoader } from 'angular2-google-maps/core';
 
 @NgModule({
     imports:      [ BrowserModule, 
@@ -27,7 +28,11 @@ import { FormDataService }    from './data/formData.service'
                       states: appStates,
                       useHash: true,
                       config: UIRouterConfigFn
-                    }) 
+                    }) ,
+                    AgmCoreModule.forRoot({
+      apiKey: "AIzaSyBB-6vnrKvsddLkJn1IhLRg0dt7maZmX0s",
+      libraries: ["places"]
+    }),
                   ],
     providers:    [{ provide: FormDataService, useClass: FormDataService }],
     declarations: [ AppComponent, NavbarComponent, PersonalComponent, WorkComponent, AddressComponent, ResultComponent ],
