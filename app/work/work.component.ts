@@ -11,6 +11,7 @@ export class WorkComponent implements OnInit, OnDestroy {
     title = 'What do you do?';
     @Input() formData;
       public empStatuses = [
+     { value: '', display: 'Select' },
     { value: 'employed', display: 'Employed' },
     { value: 'homemaker', display: 'Home Maker' },
     { value: 'Retired', display: 'Retired' }

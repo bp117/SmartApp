@@ -12,6 +12,7 @@ export class PersonalComponent implements OnInit, OnDestroy {
     title = 'Please tell us about yourself.';
     @Input() formData: FormData;
     public idTypes = [
+         { value: '', display: 'Select' },
     { value: 'ssn', display: 'Social Security Number' },
     { value: 'taxpayerID', display: 'Individual Taxpayer ID Number' },
     { value: 'NA', display: 'Not Available' }
@@ -19,6 +20,7 @@ export class PersonalComponent implements OnInit, OnDestroy {
   ];
 
     public phonetypes = [
+          { value: '', display: 'Select' },
     { value: 'cell', display: 'Cell' },
     { value: 'home', display: 'Home' },
     { value: 'work', display: 'Work' }

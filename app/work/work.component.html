@@ -7,7 +7,7 @@
                 <div class="form-group">
                       <label class="control-label" for="empStatus">Employment Status</label>  
                   <select name="empStatus" class="form-control" [(ngModel)]="formData.empStatus" style="width:180px">
-                        <option *ngFor="let status of empStatuses" >{{status.display}}</option>
+                        <option *ngFor="let status of empStatuses" [attr.selected]="status.display == 'Select' ? true : null">{{status.display}}</option>
                        </select>
                 </div>
             </div>

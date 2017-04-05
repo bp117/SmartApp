@@ -30,7 +30,7 @@
                     <div class="form-group">
                         <label class="control-label" for="phonetype">Phone Type</label>  
                        <select name="phonetype" class="form-control" [(ngModel)]="formData.phoneType" style="width:100px">
-                        <option *ngFor="let ptype of phonetypes" >{{ptype.display}}</option>
+                        <option *ngFor="let ptype of phonetypes" [attr.selected]="ptype.display == 'Select' ? true : null">{{ptype.display}}</option>
                        </select>
                     </div>
                 </div>
@@ -46,7 +46,9 @@
                     <div class="form-group">
                         <label class="control-label" for="idType">ID Type</label>  
                        <select name="idType" class="form-control" [(ngModel)]="formData.idType" style="width:100px">
-                        <option *ngFor="let idtype of idTypes" >{{idtype.display}}</option>
+                        
+   
+                        <option *ngFor="let idtype of idTypes" [attr.selected]="idtype.display == 'Select' ? true : null">{{idtype.display}}</option>
                        </select>
                     </div>
                 </div>
