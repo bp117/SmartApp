@@ -36,7 +36,8 @@ export class AddressComponent implements OnInit, OnDestroy {
             return;
           }
            var details = place.formatted_address.split(",");
-           
+           console.log(details[0]);
+           this.formData.street = details[0];
           this.formData.city = details[1];
           this.formData.state = details[2].replace(/\d+/g,'');
           

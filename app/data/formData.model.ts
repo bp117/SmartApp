@@ -2,9 +2,9 @@ export class FormData {
     firstName: string = '';
     lastName : string = '';
     phone: string = '';
-    phoneType: string = '';
+    phoneType: string = 'Select';
     idNumber: string = '';
-    idType: string = '';
+    idType: string = 'Select';
     email: string = '';
     empStatus: string = '';
     street: string = '';
