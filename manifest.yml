@@ -3,7 +3,7 @@ applications:
 - name: SmartApp
   memory: 256M
   instances: 1
-  PATH: /usr/local/bin:/usr/bin:/bin
+  PATH: .
   command: npm install && npm start
   timeout: 180
   
