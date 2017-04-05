@@ -5,5 +5,5 @@ applications:
   instances: 1
   PATH: /usr/local/bin:/usr/bin:/bin
   command: npm install && npm start
-  timeout: 1800
+  timeout: 180
   
