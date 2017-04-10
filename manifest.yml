@@ -4,6 +4,6 @@ applications:
   memory: 256M
   instances: 1
   PATH: .
-  command: npm install  && npm run lite
+  command: npm install  && npm startapp
   timeout: 180
   
