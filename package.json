@@ -7,6 +7,8 @@
     "lite": "lite-server",
     "tsc": "tsc",
     "tsc:w": "tsc -w"
+    "startapp": "ng serve",
+    "dist": "ng build && manifest.yml Staticfile dist"
   },
   "dependencies": {
     "@angular/common": "~2.4.0",
