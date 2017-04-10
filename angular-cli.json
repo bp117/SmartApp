@@ -9,6 +9,7 @@
       "outDir": "dist",
       "index": "index.html",
       "main": "app/main.ts",
+      "assets": [],
       "tsconfig": "tsconfig.json",
       "prefix": "app",
       "mobile": false,
@@ -17,7 +18,12 @@
         "content/css/riliwan-rabo.css",
         "content/css/loading-bars.css"
       ],
-      "scripts": []
+      "scripts": [],
+      "environments": {
+        "source": "environments/environment.ts",
+        "dev": "environments/environment.ts",
+       
+      }
     }
   ],
   "addons": [],
