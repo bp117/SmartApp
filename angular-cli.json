@@ -5,7 +5,7 @@
   },
   "apps": [
     {
-     
+      "root":"app",
       "outDir": "dist",
       "index": "index.html",
       "main": "app/main.ts",
