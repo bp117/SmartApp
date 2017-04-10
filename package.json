@@ -8,7 +8,7 @@
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "startapp": "ng serve",
-    "dist": "ng init && ng build && cp manifest.yml Staticfile dist"
+    "dist": "ng build && cp manifest.yml Staticfile dist"
   },
   "dependencies": {
     "@angular/common": "~2.4.0",
