@@ -7,10 +7,10 @@
     {
       "root":"app",
       "outDir": "dist",
-      "index": "index.html",
+      "index": "./index.html",
       "main": "app/main.ts",
       "assets": [],
-      "tsconfig": "tsconfig.json",
+      "tsconfig": "./tsconfig.json",
       "prefix": "app",
       "mobile": false,
       "styles": [
