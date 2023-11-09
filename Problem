@@ -94,5 +94,45 @@ The hackathon aims to produce a prototype AI-powered solution that can effective
 Join us for the ABC GenAI Hackathon and showcase your expertise in developing AI-powered solutions for sustainable finance. Make a positive impact on the environment and contribute to ABC's ambitious sustainability goals.
 
 
+////option 2
+
+Sure, here's an elaborated problem statement for the GenAI hackathon:
+
+**Hackathon Challenge: Empowering Sustainable Finance with AI-Powered Allocation Analysis**
+
+**Background**
+
+In a world increasingly focused on environmental and social responsibility, sustainable finance has emerged as a critical tool for driving positive impact. As organizations worldwide set ambitious goals for sustainable finance deployment, the ability to effectively track and evaluate progress becomes paramount. ABC, a leading financial institution, has pledged to deploy $500 billion in sustainable finance by 2030. To achieve this ambitious goal, ABC seeks an innovative AI-powered solution to analyze and optimize its allocation of sustainable finance resources.
+
+**Objective**
+
+Develop a cutting-edge AI-powered solution that can seamlessly analyze ABC's allocated finances, ensuring alignment with sustainable finance principles and providing actionable insights for maximizing impact. The solution should effectively evaluate each financial client, generate comprehensive sustainability reports, categorize finances with a sustainability flag, and segregate projects by type to identify potential lending opportunities.
+
+**Data Sources**
+
+The solution should leverage the following data sources to gain a holistic understanding of ABC's sustainable finance portfolio:
+
+1. **Project Planning Documents:** These documents provide detailed insights into project scope, objectives, budget, and timeline, enabling a thorough evaluation of sustainability alignment.
+
+2. **Sustainability Reports:** These reports offer valuable information on the environmental, social, and governance (ESG) impacts of projects, facilitating a comprehensive assessment of sustainability performance.
+
+3. **Client Documentation:** This documentation encompasses client contracts, specifications, and communication records, providing crucial context for evaluating the sustainability aspects of each financial client.
+
+**Evaluation Criteria**
+
+The proposed AI-powered solution will be evaluated based on the following criteria:
+
+1. **Accuracy and Effectiveness:** The solution should accurately identify areas of financial inefficiency and waste, ensuring that allocated finances are aligned with sustainable finance principles.
+
+2. **Actionability and Insights:** The solution should provide actionable recommendations for optimizing financial allocation strategies and maximizing the impact of sustainable finance initiatives.
+
+3. **Generalizability and Flexibility:** The solution should be generalizable across different project types and industries, adapting to the evolving landscape of sustainable finance.
+
+4. **Innovation and Scalability:** The solution should demonstrate innovative approaches to financial analysis and optimization, leveraging the power of AI to address the challenges of sustainable finance deployment.
+
+**Call to Action**
+
+We invite participants to unleash their creativity and expertise in AI-powered solutions to tackle this critical challenge. The winning solution will not only make a significant contribution to ABC's sustainable finance goals but also set a new benchmark for AI-driven financial analysis and optimization. Join us as we empower sustainable finance with the transformative power of GenAI!
+
 -----problem 3 ------------
 
