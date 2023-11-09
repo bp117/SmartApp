@@ -53,3 +53,46 @@ Effective countermeasures against identity personification using AI-generated vo
 **Call to Action:**
 
 We invite talented developers, data scientists, and AI experts to join us in this challenge to develop innovative solutions for combating identity personification through AI-generated voice prints. Your contributions will play a vital role in protecting individuals, organizations, and the integrity of voice-based interactions.
+
+
+
+------problem 2 ------------------
+
+**Problem Statement:**
+
+**ABC, a leading financial institution, has set an ambitious goal of deploying $500 billion in sustainable finance by 2030. To effectively measure progress towards this goal, ABC seeks a robust and scalable solution to accurately categorize and analyze its allocated finances.**
+
+**Objective:**
+
+Develop an AI-powered solution that can:
+
+1. **Classify financial transactions as sustainable or not based on predefined criteria and industry standards.**
+2. **Generate comprehensive reports on the distribution of sustainable finance across various sectors, geographies, and project types.**
+3. **Identify trends and patterns in sustainable finance investments, enabling ABC to make informed decisions about future allocations.**
+4. **Segregate sustainable projects based on their unique characteristics, allowing ABC to tailor its lending strategies to specific project types.**
+
+**Evaluation Criteria:**
+
+The proposed solution will be evaluated based on the following criteria:
+
+1. **Accuracy of financial transaction classification:** The solution should accurately classify financial transactions as sustainable or not with a high degree of precision and recall.
+2. **Comprehensiveness of sustainability reporting:** The solution should generate detailed and informative reports that provide a comprehensive overview of ABC's sustainable finance portfolio.
+3. **Effectiveness of trend and pattern identification:** The solution should effectively identify trends and patterns in sustainable finance investments, enabling ABC to make informed decisions about future allocations.
+4. **Granularity of project segregation:** The solution should segregate sustainable projects based on their unique characteristics, allowing ABC to tailor its lending strategies to specific project types.
+5. **Scalability and adaptability:** The solution should be scalable to accommodate ABC's growing portfolio of sustainable finance investments and adaptable to evolving industry standards and regulations.
+
+**Data:**
+
+ABC will provide the hackathon participants with a comprehensive dataset of financial transactions, including details on project type, industry, geography, and financial instruments. Participants will also have access to relevant sustainability standards and guidelines.
+
+**Expected Outcomes:**
+
+The hackathon aims to produce a prototype AI-powered solution that can effectively categorize and analyze ABC's sustainable finance investments. The winning team will have the opportunity to collaborate with ABC to further develop and implement their solution.
+
+**Call to Action:**
+
+Join us for the ABC GenAI Hackathon and showcase your expertise in developing AI-powered solutions for sustainable finance. Make a positive impact on the environment and contribute to ABC's ambitious sustainability goals.
+
+
+-----problem 3 ------------
+
