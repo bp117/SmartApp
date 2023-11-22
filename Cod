@@ -137,3 +137,11 @@ const App = () => {
   );
 };
 ```
+
+ const headers = ['Name', 'Age', 'Email'];
+  const data = [{ Name: 'John', Age: 30, Email: 'john@example.com' }, /* ...more data */];
+
+  const handleAdd = () => {/* ... */};
+  const handleEdit = (item) => {/* ... */};
+  const handleClone = (item) => {/* ... */};
+  const handleDelete = (item) => {/* ... */};
