@@ -1,4 +1,42 @@
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
+public class SidebarStepDefinitions {
+
+    private WebDriver driver;
+
+    @Given("the user is on the chat interface")
+    public void userIsOnChatInterface() {
+        // Open the chat interface URL
+        driver = new ChromeDriver();
+        driver.get("https://your-chat-interface.com");
+    }
+
+    @When("the user clicks on the \"New Lookup\" button")
+    public void userClicksNewLookupButton() {
+        driver.findElement(By.cssSelector(".mb-4.justify-center")).click();
+    }
+
+    @Then("the user should be able to enter a title for the new conversation")
+    public void userEntersTitleForNewConversation() {
+        driver.findElement(By.cssSelector(".form-control")).sendKeys("New Conversation");
+    }
+
+    @And("the user should be able to save the new conversation")
+    public void userSavesNewConversation() {
+        driver.findElement(By.cssSelector(".btn-primary")).click();
+    }
+
+    @Then("the new conversation should be displayed in the sidebar")
+    public void newConversationIsDisplayedInSidebar() {
+        String conversationTitle = driver.findElement(By.cssSelector(".list-item:last-child .conversation-title")).getText();
+        assertEquals("New Conversation", conversationTitle);
+    }
+
+    // Implement other steps similarly for edit, delete, and select conversation scenarios
+}
 Sure, here is an example Cucumber Selenium test case for the provided React component Sidebar:
 
 Gherkin
