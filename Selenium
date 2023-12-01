@@ -1,0 +1,115 @@
+
+Sure, here is an example Cucumber Selenium test case for the provided React component Sidebar:
+
+Gherkin
+Feature: Sidebar
+
+Scenario: User can create a new conversation
+    Given the user is on the chat interface
+    When the user clicks on the "New Lookup" button
+    Then the user should be able to enter a title for the new conversation
+    And the user should be able to save the new conversation
+    And the new conversation should be displayed in the sidebar
+
+Scenario: User can edit an existing conversation
+    Given the user is on the chat interface
+    And a conversation exists with the title "Conversation 1"
+    When the user clicks on the edit icon for the conversation
+    Then the user should be able to edit the title of the conversation
+    And the user should be able to save the changes
+    And the title of the conversation should be updated to the new title
+
+Scenario: User can delete an existing conversation
+    Given the user is on the chat interface
+    And a conversation exists with the title "Conversation 1"
+    When the user clicks on the delete icon for the conversation
+    Then the conversation should be deleted from the sidebar
+    And the conversation should no longer be available for selection
+
+Scenario: User can select a conversation from the sidebar
+    Given the user is on the chat interface
+    And a conversation exists with the title "Conversation 1"
+    When the user clicks on the conversation in the sidebar
+    Then the conversation should be loaded into the chat interface
+    And the messages for the conversation should be displayed
+
+
+To implement this test case, you will need to use a Cucumber test framework and a Selenium WebDriver instance. You can find examples of how to do this in the documentation for your chosen framework.
+
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class SidebarTest {
+
+    private WebDriver driver;
+
+    @Before
+    public void setUp() throws Exception {
+        System.setProperty("webdriver.chrome.driver", "<path/to/chromedriver>");
+        driver = new ChromeDriver();
+        driver.get("https://your-chat-interface.com");
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        driver.quit();
+    }
+
+    @Test
+    public void testCreateNewConversation() throws Exception {
+        // Click on the "New Lookup" button
+        driver.findElement(By.cssSelector(".mb-4.justify-center")).click();
+
+        // Enter a title for the new conversation
+        driver.findElement(By.cssSelector(".form-control")).sendKeys("New Conversation");
+
+        // Save the new conversation
+        driver.findElement(By.cssSelector(".btn-primary")).click();
+
+        // Verify the new conversation is displayed in the sidebar
+        String conversationTitle = driver.findElement(By.cssSelector(".list-item:last-child .conversation-title")).getText();
+        assertEquals("New Conversation", conversationTitle);
+    }
+
+    @Test
+    public void testEditConversation() throws Exception {
+        // Create a conversation with title "Conversation 1" (replace with your actual implementation)
+        // ...
+
+        // Click on the edit icon for the conversation
+        driver.findElement(By.cssSelector(".list-item:first-child .edit-icon")).click();
+
+        // Edit the conversation title
+        driver.findElement(By.cssSelector(".form-control")).clear();
+        driver.findElement(By.cssSelector(".form-control")).sendKeys("Edited Conversation");
+
+        // Save the changes
+        driver.findElement(By.cssSelector(".btn-primary")).click();
+
+        // Verify the conversation title is updated
+        String conversationTitle = driver.findElement(By.cssSelector(".list-item:first-child .conversation-title")).getText();
+        assertEquals("Edited Conversation", conversationTitle);
+    }
+
+    @Test
+    public void testDeleteConversation() throws Exception {
+        // Create a conversation with title "Conversation 1" (replace with your actual implementation)
+        // ...
+
+        // Click on the delete icon for the conversation
+        driver.findElement(By.cssSelector(".list-item:first-child .delete-icon")).click();
+
+        // Wait for the deletion to be reflected in the DOM
+        Thread.sleep(2000);
+
+        // Verify the conversation is no longer displayed
+        assertEquals(0, driver.findElements(By.cssSelector(".list-item:first-child")).size());
+    }
+
+    // Other test cases like selecting existing conversation, loading messages, etc. can be implemented similarly
+}
