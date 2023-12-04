@@ -1,0 +1,77 @@
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import Message from './Message';
+
+test('renders a user message', () => {
+  render(<Message role="user" content="Hello there!" />);
+  const message = screen.getByText('Hello there!');
+  expect(message).toBeInTheDocument();
+});
+
+test('renders a bot message with content', () => {
+  render(<Message role="bot" content="This is a bot message." />);
+  const message = screen.getByText('This is a bot message.');
+  expect(message).toBeInTheDocument();
+});
+
+test('renders a bot message with typing indicator', () => {
+  render(<Message role="bot" botIsTyping={true} />);
+  const typingIndicator = screen.getByRole('progressbar');
+  expect(typingIndicator).toBeInTheDocument();
+});
+
+test('renders a bot message with multiple responses', () => {
+  const content = [
+    {
+      context: 'This is the first context.',
+      book: 'Book 1',
+      hyperlink: 'https://example.com/book1',
+      generated_resp: 'This is the first generated response.'
+    },
+    {
+      context: 'This is the second context.',
+      book: 'Book 2',
+      hyperlink: 'https://example.com/book2',
+      generated_resp: 'This is the second generated response.'
+    }
+  ];
+
+  render(<Message role="bot" content={content} />);
+  const tabs = screen.getAllByRole('tab');
+  expect(tabs.length).toBe(2);
+
+  const tabsContent = screen.getAllByRole('tabpanel');
+  expect(tabsContent.length).toBe(2);
+});
+
+test('renders a bot message with summary response', () => {
+  const summaryResponse = {
+    duration: '1 second',
+    result: {
+      context: 'This is the summary context.',
+      book: 'Summary Book',
+      section_title: 'Summary Section Title',
+      hyperlink: 'https://example.com/summary',
+      generated_resp: 'This is the summary generated response.'
+    }
+  };
+
+  render(<Message role="bot" content="Hello there!" summaryResponse={summaryResponse} />);
+  const summaryAccordion = screen.getByRole('heading');
+  expect(summaryAccordion).toBeInTheDocument();
+
+  const summaryContent = screen.getByText('This is the summary generated response.');
+  expect(summaryContent).toBeInTheDocument();
+});
+
+test('renders a bot message with feedback buttons', () => {
+  render(<Message role="bot" content="Hello there!" />);
+  const copyIcon = screen.getByRole('img', { name: 'Copy Icon' });
+  expect(copyIcon).toBeInTheDocument();
+
+  const thumbUpIcon = screen.getByRole('img', { name: 'Thumb Up Icon' });
+  expect(thumbUpIcon).toBeInTheDocument();
+
+  const thumbDownIcon = screen.getByRole('img', { name: 'Thumb Down Icon' });
+  expect(thumbDownIcon).toBeInTheDocument();
+});
