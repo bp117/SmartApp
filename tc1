@@ -1,171 +1,85 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import Message from './Message';
+import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import axios from 'axios';
+import ChatInterface from './ChatInterface'; // Adjust the import based on your file structure
 
-describe('Message Component', () => {
-  it('should render user message', () => {
-    const content = 'Hello from user!';
-    render(<Message role="user" content={content} theme="dark" />);
-    expect(screen.getByText(content)).toBeInTheDocument();
-  });
+jest.mock('axios');
 
-  it('should render bot message with multiple responses', () => {
-    const content = [
-      {
-        context: 'This is the context for response 1',
-        book: 'Book 1',
-        section_title: 'Section Title 1',
-        hyperlink: 'https://example.com/response1',
-        generated_resp: 'This is the generated response for response 1',
-      },
-      {
-        context: 'This is the context for response 2',
-        book: 'Book 2',
-        section_title: 'Section Title 2',
-        hyperlink: 'https://example.com/response2',
-        generated_resp: 'This is the generated response for response 2',
-      },
-    ];
+const mockConversations = [{
+    id: 1,
+    title: 'Test Conversation',
+    messages: [{ role: 'user', content: 'Test Message' }]
+}];
 
-    render(<Message role="bot" content={content} theme="dark" />);
+const mockProps = {
+    theme: 'dark',
+    currentConversationId: 1,
+    setCurrentConversationId: jest.fn(),
+    conversations: mockConversations,
+    setConversations: jest.fn(),
+};
 
-    for (const response of content) {
-      expect(screen.getByText(response.context)).toBeInTheDocument();
-    }
-  });
+describe('ChatInterface Component', () => {
+    // Setup before each test
+    beforeEach(() => {
+        axios.post.mockClear();
+    });
 
-  it('should render bot message with typing indicator', () => {
-    render(<Message role="bot" botIsTyping={true} theme="dark" />);
-    expect(screen.getByRole('img', { name: 'Typing indicator' })).toBeInTheDocument();
-  });
+    // Test if the component renders without crashing
+    it('renders without crashing', () => {
+        render(<ChatInterface {...mockProps} />);
+        expect(screen.getByText(/Test Conversation/i)).toBeInTheDocument();
+    });
 
-  it('should copy message content on copy button click', () => {
-    const content = 'Hello from user!';
-    const mockCopyClipboard = jest.spyOn(navigator.clipboard, 'writeText');
-    const mockHandleCopy = jest.fn();
+    // Test state changes on events
+    it('updates inputValue on text input change', () => {
+        render(<ChatInterface {...mockProps} />);
+        const inputField = screen.getByRole('textbox');
+        fireEvent.change(inputField, { target: { value: 'New Message' } });
+        expect(inputField.value).toBe('New Message');
+    });
 
-    render(<Message
-      role="user"
-      content={content}
-      handleCopy={mockHandleCopy}
-      theme="dark"
-    />);
+    // Test sending a message
+    it('calls handleSendMessage on send button click', async () => {
+        render(<ChatInterface {...mockProps} />);
+        const sendButton = screen.getByRole('button', { name: /send/i });
+        fireEvent.click(sendButton);
+        
+        await waitFor(() => {
+            expect(mockProps.setConversations).toHaveBeenCalled();
+        });
+    });
 
-    const copyButton = screen.getByRole('button', { name: 'Copy' });
+    // Test file upload functionality
+    it('handles file upload', async () => {
+        axios.post.mockResolvedValueOnce({ data: { requestId: '123' } });
+        axios.get.mockResolvedValueOnce({ data: { status: 'completed' } });
 
-    copyButton.click();
+        render(<ChatInterface {...mockProps} />);
+        const uploadButton = screen.getByText(/Upload/i);
+        fireEvent.click(uploadButton);
 
-    expect(mockHandleCopy).toHaveBeenCalledTimes(1);
-    expect(mockCopyClipboard).toHaveBeenCalledWith(content);
-  });
+        const fileInput = screen.getByLabelText(/Choose a file/i);
+        const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+        fireEvent.change(fileInput, { target: { files: [file] } });
 
-  it('should update feedback state on feedback button click', () => {
-    const mockHandleFeedback = jest.fn();
+        await waitFor(() => {
+            expect(axios.post).toHaveBeenCalled();
+        });
+    });
 
-    render(<Message
-      role="bot"
-      content="Hello from bot!"
-      handleFeedback={mockHandleFeedback}
-      theme="dark"
-    />);
+    // Test for conditional rendering
+    it('renders CircularProgress when isLoading is true', () => {
+        render(<ChatInterface {...{ ...mockProps, isLoading: true }} />);
+        expect(screen.getByRole('progressbar')).toBeInTheDocument();
+    });
 
-    const thumbsUpButton = screen.getByRole('button', { name: 'Thumbs up' });
-    const thumbsDownButton = screen.getByRole('button', { name: 'Thumbs down' });
+    // Snapshot Test
+    it('matches snapshot', () => {
+        const { asFragment } = render(<ChatInterface {...mockProps} />);
+        expect(asFragment()).toMatchSnapshot();
+    });
 
-    thumbsUpButton.click();
-    expect(mockHandleFeedback).toHaveBeenCalledWith('up');
-
-    thumbsDownButton.click();
-    expect(mockHandleFeedback).toHaveBeenCalledWith('down');
-  });
-
-  it('should trigger summarize action on summarize button click', () => {
-    const mockHandleSummarize = jest.fn();
-    const mockSetSummaryResponse = jest.fn();
-
-    const context = 'This is the context for the response';
-    render(<Message
-      role="bot"
-      content={[{ context }]}
-      handleSummarize={mockHandleSummarize}
-      setSummaryResponse={mockSetSummaryResponse}
-      theme="dark"
-    />);
-
-    const summarizeButton = screen.getByRole('button', { name: 'Summarize' });
-
-    summarizeButton.click();
-
-    expect(mockHandleSummarize).toHaveBeenCalledWith(context);
-  });
-
-  it('should toggle enhanced state on enhance button click', () => {
-    const mockSetIsEnhanced = jest.fn();
-
-    render(<Message
-      role="bot"
-      content={[{ context: 'This is the context for the response' }]}
-      setIsEnhanced={mockSetIsEnhanced}
-      theme="dark"
-    />);
-
-    const enhanceButton = screen.getByRole('button', { name: 'Enhance' });
-
-    enhanceButton.click();
-
-    expect(mockSetIsEnhanced).toHaveBeenCalledTimes(1);
-  });
-
- it('should render summary response if available', () => {
-  const summaryResponse = {
-    duration: '10 seconds',
-    result: {
-      generated_resp: 'This is the summarized response',
-    },
-  };
-
-  render(<Message
-    role="bot"
-    content={[{ context: 'This is the context for the response' }]}
-    theme="dark"
-    setIsSummarized={() => {}}
-    isSummarized={true}
-    setIsEnhanced={() => {}}
-    isEnhanced={false}
-    setSelectedTabContext={() => {}}
-    selectedTabContext="response 1"
-    summaryResponse={summaryResponse}
-    setSummaryResponse={() => {}}
-  />);
-
-  const summaryAccordion = screen.getByRole('button', { name: 'Expand summary' });
-  summaryAccordion.click();
-  const summaryContent = screen.getByText(summaryResponse.result.generated_resp);
-
-  expect(summaryContent).toBeInTheDocument();
+    // More tests for each feature like useEffect, useRef, error handling, etc.
 });
 
-it('should hide summary response if isSummarized is false', () => {
-  const summaryResponse = {
-    duration: '10 seconds',
-    result: {
-      generated_resp: 'This is the summarized response',
-    },
-  };
-
-  render(<Message
-    role="bot"
-    content={[{ context: 'This is the context for the response' }]}
-    theme="dark"
-    setIsSummarized={() => {}}
-    isSummarized={false}
-    setIsEnhanced={() => {}}
-    isEnhanced={false}
-    setSelectedTabContext={() => {}}
-    selectedTabContext="response 1"
-    summaryResponse={summaryResponse}
-    setSummaryResponse={() => {}}
-  />);
-
-  expect(screen.queryByRole('button', { name: 'Expand summary' })).not.toBeInTheDocument();
-});
