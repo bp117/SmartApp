@@ -1,77 +1,256 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import Message from './Message';
 
-test('renders a user message', () => {
-  render(<Message role="user" content="Hello there!" />);
-  const message = screen.getByText('Hello there!');
-  expect(message).toBeInTheDocument();
+describe('Message Component', () => {
+  it('should render user message', () => {
+    const content = 'Hello from user!';
+    const wrapper = render(
+      <Message
+        role="user"
+        content={content}
+        theme="dark"
+        setIsSummarized={() => {}}
+        isSummarized={false}
+        setIsEnhanced={() => {}}
+        isEnhanced={false}
+        setSelectedTabContext={() => {}}
+        selectedTabContext="response 1"
+        summaryResponse={null}
+        setSummaryResponse={() => {}}
+      />
+    );
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should render bot message with multiple responses', () => {
+    const content = [
+      {
+        context: 'This is the context for response 1',
+        book: 'Book 1',
+        section_title: 'Section Title 1',
+        hyperlink: 'https://example.com/response1',
+        generated_resp: 'This is the generated response for response 1',
+      },
+      {
+        context: 'This is the context for response 2',
+        book: 'Book 2',
+        section_title: 'Section Title 2',
+        hyperlink: 'https://example.com/response2',
+        generated_resp: 'This is the generated response for response 2',
+      },
+    ];
+
+    const wrapper = render(
+      <Message
+        role="bot"
+        content={content}
+        theme="dark"
+        setIsSummarized={() => {}}
+        isSummarized={false}
+        setIsEnhanced={() => {}}
+        isEnhanced={false}
+        setSelectedTabContext={() => {}}
+        selectedTabContext="response 1"
+        summaryResponse={null}
+        setSummaryResponse={() => {}}
+      />
+    );
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should render bot message with typing indicator', () => {
+    const wrapper = render(
+      <Message
+        role="bot"
+        botIsTyping={true}
+        theme="dark"
+        setIsSummarized={() => {}}
+        isSummarized={false}
+        setIsEnhanced={() => {}}
+        isEnhanced={false}
+        setSelectedTabContext={() => {}}
+        selectedTabContext="response 1"
+        summaryResponse={null}
+        setSummaryResponse={() => {}}
+      />
+    );
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should copy message content on copy button click', () => {
+    const content = 'Hello from user!';
+    const mockCopyClipboard = jest.spyOn(navigator.clipboard, 'writeText');
+    const mockHandleCopy = jest.fn();
+
+    const wrapper = render(
+      <Message
+        role="user"
+        content={content}
+        handleCopy={mockHandleCopy}
+        theme="dark"
+        setIsSummarized={() => {}}
+        isSummarized={false}
+        setIsEnhanced={() => {}}
+        isEnhanced={false}
+        setSelectedTabContext={() => {}}
+        selectedTabContext="response 1"
+        summaryResponse={null}
+        setSummaryResponse={() => {}}
+      />
+    );
+
+    const copyButton = wrapper.find('.cursor-pointer').at(0);
+
+    copyButton.simulate('click');
+
+    expect(mockHandleCopy).toHaveBeenCalledTimes(1);
+    expect(mockCopyClipboard).toHaveBeenCalledWith(content);
+  });
+
+  it('should update feedback state on feedback button click', () => {
+    const mockHandleFeedback = jest.fn();
+
+    const wrapper = render(
+      <Message
+        role="bot"
+        content="Hello from bot!"
+        handleFeedback={mockHandleFeedback}
+        theme="dark"
+        setIsSummarized={() => {}}
+        isSummarized={false}
+        setIsEnhanced={() => {}}
+        isEnhanced={false}
+        setSelectedTabContext={() => {}}
+        selectedTabContext="response 1"
+        summaryResponse={null}
+        setSummaryResponse={() => {}}
+      />
+    );
+
+    const thumbsUpButton = wrapper.find('.cursor-pointer').at(1);
+    const thumbsDownButton = wrapper.find('.cursor-pointer').at(2);
+
+     thumbsUpButton.simulate('click');
+  expect(mockHandleFeedback).toHaveBeenCalledWith('up');
+
+  thumbsDownButton.simulate('click');
+  expect(mockHandleFeedback).toHaveBeenCalledWith('down');
 });
 
-test('renders a bot message with content', () => {
-  render(<Message role="bot" content="This is a bot message." />);
-  const message = screen.getByText('This is a bot message.');
-  expect(message).toBeInTheDocument();
+it('should trigger summarize action on summarize button click', () => {
+  const mockHandleSummarize = jest.fn();
+  const mockSetSummaryResponse = jest.fn();
+
+  const context = 'This is the context for the response';
+  const wrapper = render(
+    <Message
+      role="bot"
+      content={[{ context }]}
+      handleSummarize={mockHandleSummarize}
+      setSummaryResponse={mockSetSummaryResponse}
+      theme="dark"
+      setIsSummarized={() => {}}
+      isSummarized={false}
+      setIsEnhanced={() => {}}
+      isEnhanced={false}
+      setSelectedTabContext={() => {}}
+      selectedTabContext="response 1"
+      summaryResponse={null}
+    />
+  );
+
+  const summarizeButton = wrapper.find('button').at(0);
+
+  summarizeButton.simulate('click');
+
+  expect(mockHandleSummarize).toHaveBeenCalledWith(context);
 });
 
-test('renders a bot message with typing indicator', () => {
-  render(<Message role="bot" botIsTyping={true} />);
-  const typingIndicator = screen.getByRole('progressbar');
-  expect(typingIndicator).toBeInTheDocument();
+it('should toggle enhanced state on enhance button click', () => {
+  const mockSetIsEnhanced = jest.fn();
+
+  const wrapper = render(
+    <Message
+      role="bot"
+      content={[{ context: 'This is the context for the response' }]}
+      setIsEnhanced={mockSetIsEnhanced}
+      theme="dark"
+      setIsSummarized={() => {}}
+      isSummarized={false}
+      setIsEnhanced={() => {}}
+      isEnhanced={false}
+      setSelectedTabContext={() => {}}
+      selectedTabContext="response 1"
+      summaryResponse={null}
+    />
+  );
+
+  const enhanceButton = wrapper.find('button').at(1);
+
+  enhanceButton.simulate('click');
+
+  expect(mockSetIsEnhanced).toHaveBeenCalledTimes(1);
 });
 
-test('renders a bot message with multiple responses', () => {
-  const content = [
-    {
-      context: 'This is the first context.',
-      book: 'Book 1',
-      hyperlink: 'https://example.com/book1',
-      generated_resp: 'This is the first generated response.'
-    },
-    {
-      context: 'This is the second context.',
-      book: 'Book 2',
-      hyperlink: 'https://example.com/book2',
-      generated_resp: 'This is the second generated response.'
-    }
-  ];
-
-  render(<Message role="bot" content={content} />);
-  const tabs = screen.getAllByRole('tab');
-  expect(tabs.length).toBe(2);
-
-  const tabsContent = screen.getAllByRole('tabpanel');
-  expect(tabsContent.length).toBe(2);
-});
-
-test('renders a bot message with summary response', () => {
+it('should render summary response if available', () => {
   const summaryResponse = {
-    duration: '1 second',
+    duration: '10 seconds',
     result: {
-      context: 'This is the summary context.',
-      book: 'Summary Book',
-      section_title: 'Summary Section Title',
-      hyperlink: 'https://example.com/summary',
-      generated_resp: 'This is the summary generated response.'
-    }
+      generated_resp: 'This is the summarized response',
+    },
   };
 
-  render(<Message role="bot" content="Hello there!" summaryResponse={summaryResponse} />);
-  const summaryAccordion = screen.getByRole('heading');
+  const wrapper = render(
+    <Message
+      role="bot"
+      content={[{ context: 'This is the context for the response' }]}
+      theme="dark"
+      setIsSummarized={() => {}}
+      isSummarized={true}
+      setIsEnhanced={() => {}}
+      isEnhanced={false}
+      setSelectedTabContext={() => {}}
+      selectedTabContext="response 1"
+      summaryResponse={summaryResponse}
+      setSummaryResponse={() => {}}
+    />
+  );
+
+  const summaryAccordion = wrapper.find('Accordion');
+  const summaryContent = wrapper.find('Typography').text();
+
   expect(summaryAccordion).toBeInTheDocument();
-
-  const summaryContent = screen.getByText('This is the summary generated response.');
-  expect(summaryContent).toBeInTheDocument();
+  expect(summaryContent).toBe(summaryResponse.result.generated_resp);
 });
 
-test('renders a bot message with feedback buttons', () => {
-  render(<Message role="bot" content="Hello there!" />);
-  const copyIcon = screen.getByRole('img', { name: 'Copy Icon' });
-  expect(copyIcon).toBeInTheDocument();
+it('should hide summary response if isSummarized is false', () => {
+  const summaryResponse = {
+    duration: '10 seconds',
+    result: {
+      generated_resp: 'This is the summarized response',
+    },
+  };
 
-  const thumbUpIcon = screen.getByRole('img', { name: 'Thumb Up Icon' });
-  expect(thumbUpIcon).toBeInTheDocument();
+  const wrapper = render(
+    <Message
+      role="bot"
+      content={[{ context: 'This is the context for the response' }]}
+      theme="dark"
+      setIsSummarized={() => {}}
+      isSummarized={false}
+      setIsEnhanced={() => {}}
+      isEnhanced={false}
+      setSelectedTabContext={() => {}}
+      selectedTabContext="response 1"
+      summaryResponse={summaryResponse}
+      setSummaryResponse={() => {}}
+    />
+  );
 
-  const thumbDownIcon = screen.getByRole('img', { name: 'Thumb Down Icon' });
-  expect(thumbDownIcon).toBeInTheDocument();
+  const summaryAccordion = wrapper.find('Accordion');
+
+  expect(summaryAccordion).not.toBeInTheDocument();
 });
+
+
