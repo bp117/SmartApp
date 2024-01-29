@@ -1,0 +1,34 @@
+import React from 'react';
+import { Container, Typography, Button, Box } from '@mui/material';
+import { Link } from 'react-router-dom';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import HomeIcon from '@mui/icons-material/Home';
+
+const DisclaimerPage: React.FC = () => {
+  return (
+    <Container maxWidth="md" className="my-10 p-6 rounded-lg shadow-lg bg-white text-center">
+      <Box className="mb-4">
+        <WarningAmberIcon color="secondary" style={{ fontSize: 60 }} />
+      </Box>
+      <Typography variant="h4" className="mb-4 font-bold">
+        Disclaimer / Terms of Use
+      </Typography>
+      <Typography variant="body1" className="mb-6">
+        By accessing and using this platform, you acknowledge that you will be using services and technologies like LLM, GenAI, etc. 
+        Please be aware that while we strive for accuracy, we cannot guarantee the reliability and correctness of all content generated.
+        Use the information provided responsibly and at your own risk.
+      </Typography>
+      <Typography variant="body1" className="mb-6">
+        {/* Add more custom messages here if needed */}
+      </Typography>
+      <Typography variant="body1" className="mb-6">
+        Use the sidebar navigation links to proceed.
+      </Typography>
+      <Button variant="contained" color="primary" component={Link} to="/" startIcon={<HomeIcon />}>
+        Go to Homepage
+      </Button>
+    </Container>
+  );
+};
+
+export default DisclaimerPage;
