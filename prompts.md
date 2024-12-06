@@ -126,3 +126,127 @@ The model includes all optional fields and indicates that placeholder values are
 ---
 
 This approach ensures the model can handle all aspects of generating, validating, and explaining XML messages based on the ISO 20022 specification. Let me know if you'd like assistance implementing this system!
+
+
+
+Parse and Understand Usage Restrictions:
+
+Extract conditional rules from the specification (e.g., "if X is missing, then Y becomes mandatory") and store these rules for reference.
+Apply these rules when generating the XML.
+Conditional Logic for Element Inclusion:
+
+Check for presence or absence of specific elements (e.g., <BICFI> in <DbtrAgt>).
+Dynamically determine the inclusion of other elements (e.g., <Nm> and <PstlAdr>) based on these conditions.
+Validation Against Usage Rules:
+
+Simulate validation by ensuring that:
+Conditional elements are included or excluded correctly based on the rules.
+Missing required elements in specific scenarios (e.g., when <BICFI> is absent) are flagged.
+Explanation of Applied Rules:
+
+Provide a summary of the usage restrictions applied during XML generation, such as:
+"The <BICFI> element is missing, so <Nm> and <PstlAdr> were included as mandatory elements under <DbtrAgt>."
+
+Generate an XML for pacs.008.001.08:
+
+Include all mandatory elements as specified in the guidelines.
+Include optional elements based on the following rules:
+If an optional element has usage restrictions (e.g., "if BIC is not present, Name and Postal Address are mandatory"), ensure that these rules are adhered to.
+Exclude any removed elements.
+Use placeholder values for elements where specific data is not provided.
+Clearly explain how usage restriction rules were applied in the generated XML.
+
+
+
+
+To ensure that usage restriction guidelines for each element are followed (e.g., conditional rules like "if BIC is not present, then name and postal address are mandatory"), we need to incorporate **conditional logic** into both the prompt and system-level instructions.
+
+Here’s how to handle this effectively:
+
+---
+
+### **Framing the User Prompt**
+
+#### Detailed Prompt
+> Generate an XML for `pacs.008.001.08`:
+> - Include all mandatory elements as specified in the guidelines.
+> - Include optional elements based on the following rules:
+>   - If an optional element has usage restrictions (e.g., "if BIC is not present, Name and Postal Address are mandatory"), ensure that these rules are adhered to.
+>   - Exclude any removed elements.
+> - Use placeholder values for elements where specific data is not provided.
+> - Clearly explain how usage restriction rules were applied in the generated XML.
+
+---
+
+### **System Instructions to the Model**
+
+1. **Parse and Understand Usage Restrictions**:
+   - Extract conditional rules from the specification (e.g., "if X is missing, then Y becomes mandatory") and store these rules for reference.
+   - Apply these rules when generating the XML.
+
+2. **Conditional Logic for Element Inclusion**:
+   - Check for presence or absence of specific elements (e.g., `<BICFI>` in `<DbtrAgt>`).
+   - Dynamically determine the inclusion of other elements (e.g., `<Nm>` and `<PstlAdr>`) based on these conditions.
+
+3. **Validation Against Usage Rules**:
+   - Simulate validation by ensuring that:
+     - Conditional elements are included or excluded correctly based on the rules.
+     - Missing required elements in specific scenarios (e.g., when `<BICFI>` is absent) are flagged.
+
+4. **Explanation of Applied Rules**:
+   - Provide a summary of the usage restrictions applied during XML generation, such as:
+     - "The `<BICFI>` element is missing, so `<Nm>` and `<PstlAdr>` were included as mandatory elements under `<DbtrAgt>`."
+
+---
+
+### **Example Usage Rules and Corresponding XML**
+
+#### **Rule**:
+> If `<BICFI>` (BIC) is absent in `<DbtrAgt>`, then `<Nm>` (Name) and `<PstlAdr>` (Postal Address) must be included.
+
+#### **Generated XML**:
+```xml
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
+    <FIToFICstmrCdtTrf>
+        <CdtTrfTxInf>
+            <DbtrAgt>
+                <FinInstnId>
+                    <!-- No BIC Provided -->
+                    <Nm>Debtor Agent Name</Nm>
+                    <PstlAdr>
+                        <Ctry>US</Ctry>
+                        <AdrLine>123 Main Street</AdrLine>
+                    </PstlAdr>
+                </FinInstnId>
+            </DbtrAgt>
+        </CdtTrfTxInf>
+    </FIToFICstmrCdtTrf>
+</Document>
+```
+
+#### **Explanation**:
+> The `<BICFI>` element is missing in `<DbtrAgt>`. According to usage restrictions, `<Nm>` and `<PstlAdr>` are now mandatory. These elements were included with placeholder values.
+
+---
+
+### **Refined Prompt with Validation**
+To generate XML while adhering to usage restrictions, the refined user prompt could be:
+
+> Generate an XML for `pacs.008.001.08` that adheres to all usage restrictions. If specific conditions apply (e.g., when a mandatory element is missing), include the corresponding conditional elements as required. Provide an explanation for how each usage restriction was applied.
+
+---
+
+### **Validation Workflow**
+1. **Initial XML Generation**:
+   - Generate the XML with mandatory and optional elements based on the user's request.
+2. **Apply Usage Restrictions**:
+   - Iterate through the generated XML.
+   - Check for any missing mandatory elements that become required due to conditional rules.
+   - Add or modify elements as necessary.
+3. **Simulated Validation**:
+   - Ensure the final XML adheres to inferred rules from the usage restrictions.
+   - Flag any discrepancies and suggest corrections.
+
+---
+
+This approach ensures that the XML is generated in compliance with both the mandatory structure and the conditional usage restrictions. Let me know if you'd like to test this with specific rules or XML samples!
